@@ -1,0 +1,22 @@
+apply plugin: 'java'
+
+group = "com.workshop.alexa"
+version = '1.0'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+task fatJar(type: Jar) {
+    baseName = project.name + '-fat'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile 'com.amazon.alexa:alexa-skills-kit:1.2'
+}
+
+build.dependsOn fatJar
